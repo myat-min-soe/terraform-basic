@@ -1,13 +1,16 @@
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
+  tags = {
+    Name = "TF-VPC"
+  }
 }
 
 ###################################
 
 resource "aws_subnet" "public_subnet_1" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = var.public_subnet_1
-  availability_zone = "ap-southeast-1a"
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet_1
+  availability_zone       = "ap-southeast-1a"
   map_public_ip_on_launch = "true"
 
   tags = {
@@ -16,9 +19,9 @@ resource "aws_subnet" "public_subnet_1" {
 }
 
 resource "aws_subnet" "public_subnet_2" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = var.public_subnet_2
-  availability_zone = "ap-southeast-1b"
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet_2
+  availability_zone       = "ap-southeast-1b"
   map_public_ip_on_launch = "true"
 
   tags = {
@@ -27,8 +30,8 @@ resource "aws_subnet" "public_subnet_2" {
 }
 
 resource "aws_subnet" "private_subnet_1" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = var.private_subnet_1
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_1
   availability_zone = "ap-southeast-1a"
 
   tags = {
@@ -37,8 +40,8 @@ resource "aws_subnet" "private_subnet_1" {
 }
 
 resource "aws_subnet" "private_subnet_2" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = var.private_subnet_2
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_2
   availability_zone = "ap-southeast-1b"
 
   tags = {

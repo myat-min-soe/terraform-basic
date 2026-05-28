@@ -21,7 +21,7 @@ data "aws_ami" "this" {
 ##########################################
 
 resource "aws_security_group" "instance_sg" {
-  name        = "${var.name}-sg"
+  name        = "${var.project_name}-sg"
   description = "Allow HTTP and HTTPS traffic"
   vpc_id      = var.vpc_id
 
@@ -65,7 +65,7 @@ resource "aws_instance" "this" {
   root_block_device {
     volume_size = 20
     volume_type = "gp3"
-    encrypt     = true
+    encrypted     = true
   }
   tags = {
     Name = var.project_name

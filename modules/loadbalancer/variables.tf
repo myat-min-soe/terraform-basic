@@ -40,3 +40,8 @@ variable "health_check_path" {
   type    = string
   default = "/"
 }
+
+variable "alb_name" {
+  type = string
+  default = ""
+}

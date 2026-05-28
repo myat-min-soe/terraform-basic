@@ -43,3 +43,24 @@ variable "environment" {
   type        = string
   default     = ""
 }
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = ""
+}
+#######################################
+
+
+variable "domain_name" {
+  type = string
+}
+
+variable "certificate_arn" {
+  type = string
+}
+
+variable "alb_name" {
+  type = string
+  default = ""
+}

@@ -27,3 +27,19 @@ variable "private_subnet_2" {
   type        = string
   default     = ""
 }
+
+################################################
+## Ec2 Variable
+################################################
+
+variable "project_name" {
+  description = "Project name for AMI lookup and tags"
+  type        = string
+  default     = ""
+}
+
+variable "environment" {
+  description = "Environment tag"
+  type        = string
+  default     = ""
+}

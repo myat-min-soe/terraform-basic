@@ -6,3 +6,25 @@ module "vpc" {
   private_subnet_1 = var.private_subnet_1
   private_subnet_2 = var.private_subnet_2
 }
+
+module "ec2" {
+  source             = "./modules/ec2"
+  vpc_id             = module.vpc.vpc_id
+  public_subnet_1_id = module.vpc.public_subnet_1_id
+  project_name       = var.project_name
+  environment        = var.environment
+}
+
+module "alb" {
+  source = "../../modules/loadbalancer"
+
+  vpc_id             = module.vpc.vpc_id
+  public_subnet_1_id = module.vpc.public_subnet_1_id
+  public_subnet_2_id = module.vpc.public_subnet_2_id
+  target_instance_id = module.ec2.instance_id
+  project_name       = var.project_name
+  environment        = var.environment
+  domain_name        = var.domain_name
+  certificate_arn    = var.certificate_arn
+}
+

@@ -16,7 +16,7 @@ module "ec2" {
 }
 
 module "alb" {
-  source = "../../modules/loadbalancer"
+  source = "./modules/loadbalancer"
 
   vpc_id             = module.vpc.vpc_id
   public_subnet_1_id = module.vpc.public_subnet_1_id

@@ -15,7 +15,6 @@ on:
 
 permissions:
   contents: read
-  actions: read
 
 env:
   AWS_REGION: ap-southeast-1
@@ -52,7 +51,7 @@ jobs:
   plan:
     name: Plan
     runs-on: ubuntu-latest
-    if: github.event.inputs.stage == 'plan'
+    if: github.event.inputs.stage == 'plan' || github.event.inputs.stage == 'apply'
     environment: develop
 
     env:
@@ -78,16 +77,8 @@ jobs:
         working-directory: ${{ env.TF_WORKING_DIR }}
 
       - name: Plan
-        run: terraform plan -out=terraform.tfplan
+        run: terraform plan
         working-directory: ${{ env.TF_WORKING_DIR }}
-
-      - name: Upload plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: tfplan
-          path: ${{ env.TF_WORKING_DIR }}/terraform.tfplan
-          retention-days: 7
-          if-no-files-found: error
 
   apply:
     name: Apply
@@ -106,34 +97,10 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      - name: Download latest plan artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          RUN_ID=$(gh run list \
-            --workflow "${{ github.workflow }}" \
-            --branch "${{ github.ref_name }}" \
-            --json databaseId \
-            --jq 'map(select(. != null)) | first // empty')
-          
-          if [ -z "$RUN_ID" ]; then
-            echo "No previous workflow runs found."
-            exit 1
-          fi
-          
-          gh run download "$RUN_ID" -n tfplan -D "${{ env.TF_WORKING_DIR }}"
-          
-          if [ ! -f "${{ env.TF_WORKING_DIR }}/terraform.tfplan" ]; then
-            echo "Plan artifact not found in run $RUN_ID"
-            exit 1
-          fi
-          
-          echo "Downloaded plan from run $RUN_ID"
-
       - name: Init
         run: terraform init
         working-directory: ${{ env.TF_WORKING_DIR }}
 
       - name: Apply
-        run: terraform apply -auto-approve terraform.tfplan
+        run: terraform apply -auto-approve
         working-directory: ${{ env.TF_WORKING_DIR }}

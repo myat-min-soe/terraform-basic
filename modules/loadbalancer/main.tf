@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb_sg" {
-  name        = "${var.project_name}-sg"
+  name        = "${var.project_name}-alb-sg"
   description = "Allow HTTP and HTTPS traffic"
   vpc_id      = var.vpc_id
 

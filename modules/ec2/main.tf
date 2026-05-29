@@ -21,7 +21,7 @@ data "aws_ami" "this" {
 ##########################################
 
 resource "aws_security_group" "instance_sg" {
-  name        = "${var.project_name}-sg"
+  name        = "${var.project_name}-instance-sg"
   description = "Allow HTTP and HTTPS traffic"
   vpc_id      = var.vpc_id
 

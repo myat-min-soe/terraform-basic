@@ -6,6 +6,14 @@ terraform {
       version = "6.46.0"
     }
   }
+  backend "s3" {
+    bucket = "bootcamp-devops-backend-terraform"
+    key    = "dev/terraform.tfstate"
+    region = "ap-southeast-1"
+    profile = "mms"
+    encrypt      = true
+    use_lockfile = true
+  }
 }
 
 provider "aws" {

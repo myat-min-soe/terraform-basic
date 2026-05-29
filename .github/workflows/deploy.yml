@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 env:
   AWS_REGION: ap-southeast-1
@@ -51,7 +52,7 @@ jobs:
   plan:
     name: Plan
     runs-on: ubuntu-latest
-    if: github.event.inputs.stage == 'plan' || github.event.inputs.stage == 'apply'
+    if: github.event.inputs.stage == 'plan'
     environment: develop
 
     env:
@@ -83,9 +84,9 @@ jobs:
       - name: Upload plan
         uses: actions/upload-artifact@v4
         with:
-          name: tfplan-${{ github.run_id }}
+          name: tfplan
           path: ${{ env.TF_WORKING_DIR }}/terraform.tfplan
-          retention-days: 1
+          retention-days: 7
           if-no-files-found: error
 
   apply:
@@ -105,11 +106,29 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      - name: Download plan artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan-${{ github.run_id }}
-          path: ${{ env.TF_WORKING_DIR }}
+      - name: Download latest plan artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUN_ID=$(gh run list \
+            --workflow "${{ github.workflow }}" \
+            --branch "${{ github.ref_name }}" \
+            --json databaseId \
+            --jq 'map(select(. != null)) | first // empty')
+          
+          if [ -z "$RUN_ID" ]; then
+            echo "No previous workflow runs found."
+            exit 1
+          fi
+          
+          gh run download "$RUN_ID" -n tfplan -D "${{ env.TF_WORKING_DIR }}"
+          
+          if [ ! -f "${{ env.TF_WORKING_DIR }}/terraform.tfplan" ]; then
+            echo "Plan artifact not found in run $RUN_ID"
+            exit 1
+          fi
+          
+          echo "Downloaded plan from run $RUN_ID"
 
       - name: Init
         run: terraform init

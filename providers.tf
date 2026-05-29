@@ -10,7 +10,7 @@ terraform {
     bucket = "bootcamp-devops-backend-terraform"
     key    = "dev/terraform.tfstate"
     region = "ap-southeast-1"
-    profile = "mms"
+    # profile = "mms"
     encrypt      = true
     use_lockfile = true
   }
@@ -18,7 +18,7 @@ terraform {
 
 provider "aws" {
   region  = "ap-southeast-1"
-  profile = "mms"
+  # profile = "mms"
 
   default_tags {
     tags = {

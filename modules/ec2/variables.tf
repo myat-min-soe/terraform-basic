@@ -23,3 +23,9 @@ variable "instance_type" {
   type        = string
   default     = ""
 }
+
+variable "iam_instance_profile_name" {
+    description = "Instance Profile Name"
+    type = string
+    default = ""
+}

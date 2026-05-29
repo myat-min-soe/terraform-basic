@@ -15,6 +15,7 @@ certificate_arn = "arn:aws:acm:ap-southeast-1:801100257021:certificate/92c83fa8-
 
 policy_name = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 instance_profile_name = "devops-bootcamp-ec2-ssm"
+ec2_role_name = "devops_bootcamp_ec2_role"
 
 db_name = "bootcamp_db"
 db_engine = "mysql"

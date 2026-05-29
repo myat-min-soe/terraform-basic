@@ -15,6 +15,9 @@ module "ec2" {
   environment        = var.environment
   instance_type      = var.instance_type
   iam_instance_profile_name = module.iam.instance_profile_name
+  depends_on = [
+    module.iam
+  ]
 }
 
 module "alb" {
@@ -34,7 +37,8 @@ module "alb" {
 module "iam" {
   source          = "./modules/iam"
   policy_name     = var.policy_name
-  instance_profile_name = var.instance_profile_name
+  ec2_role_name = var.ec2_role_name
+  ec2_instance_profile_name = var.instance_profile_name
 }
 
 module "db" {

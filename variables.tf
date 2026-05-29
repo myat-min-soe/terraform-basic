@@ -78,6 +78,11 @@ variable "instance_profile_name" {
     default = ""
 }
 
+variable "ec2_role_name" {
+    description = "EC2 Role Name"
+    type = string
+    default = ""
+}
 
 
 variable "db_name" {

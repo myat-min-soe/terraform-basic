@@ -40,7 +40,7 @@ resource "aws_lb" "this" {
   load_balancer_type = "application"
   internal           = false
   security_groups    = [aws_security_group.alb_sg.id]
-   subnets            = [var.public_subnet_1_id, var.public_subnet_2_id]
+  subnets            = [var.public_subnet_1_id, var.public_subnet_2_id]
 }
 
 ################################################

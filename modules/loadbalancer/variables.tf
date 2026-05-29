@@ -10,7 +10,7 @@ variable "vpc_id" {
   type = string
 }
 
-variable "public_subnet_1_id"   {
+variable "public_subnet_1_id" {
   type = string
 }
 
@@ -42,6 +42,6 @@ variable "health_check_path" {
 }
 
 variable "alb_name" {
-  type = string
+  type    = string
   default = ""
 }

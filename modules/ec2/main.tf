@@ -49,7 +49,7 @@ resource "aws_security_group" "instance_sg" {
   }
 
   tags = {
-    Name     = var.project_name
+    Name        = var.project_name
     Environment = var.environment
   }
 }
@@ -61,11 +61,12 @@ resource "aws_instance" "this" {
   instance_type               = var.instance_type
   subnet_id                   = var.public_subnet_1_id
   vpc_security_group_ids      = [aws_security_group.instance_sg.id]
+  iam_instance_profile        = var.iam_instance_profile_name
   associate_public_ip_address = true
   root_block_device {
     volume_size = 20
     volume_type = "gp3"
-    encrypted     = true
+    encrypted   = true
   }
   tags = {
     Name = var.project_name
